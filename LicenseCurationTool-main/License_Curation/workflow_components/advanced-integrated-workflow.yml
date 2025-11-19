@@ -121,40 +121,40 @@ jobs:
 
           # Extract and display summary using Python
           cat > display_policy_summary.py << 'EOF'
-import json
-import sys
-import os
+          import json
+          import sys
+          import os
 
-try:
-    with open('policy-reports/policy-results.json', 'r') as f:
-        data = json.load(f)
-        summary = data.get('summary', {})
+          try:
+              with open('policy-reports/policy-results.json', 'r') as f:
+                  data = json.load(f)
+                  summary = data.get('summary', {})
 
-    print(f"  ✅ Approved:    {summary.get('approved', 0)}")
-    print(f"  ⚠️  Conditional: {summary.get('conditional', 0)}")
-    print(f"  ❌ Forbidden:   {summary.get('forbidden', 0)}")
-    print(f"  ❓ Unknown:     {summary.get('unknown', 0)}")
-    print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
+              print(f"  ✅ Approved:    {summary.get('approved', 0)}")
+              print(f"  ⚠️  Conditional: {summary.get('conditional', 0)}")
+              print(f"  ❌ Forbidden:   {summary.get('forbidden', 0)}")
+              print(f"  ❓ Unknown:     {summary.get('unknown', 0)}")
+              print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
 
-    # Add to GitHub summary
-    summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
-    with open(summary_file_path, 'a') as summary_file:
-        summary_file.write("\n## 📋 License Policy Compliance\n\n")
-        summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
-        summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
-        summary_file.write(f"- ⚠️ Conditional: {summary.get('conditional', 0)}\n")
-        summary_file.write(f"- ❌ Forbidden: {summary.get('forbidden', 0)}\n")
-        summary_file.write(f"- ❓ Unknown: {summary.get('unknown', 0)}\n\n")
+              # Add to GitHub summary
+              summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+              with open(summary_file_path, 'a') as summary_file:
+                  summary_file.write("\n## 📋 License Policy Compliance\n\n")
+                  summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
+                  summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
+                  summary_file.write(f"- ⚠️ Conditional: {summary.get('conditional', 0)}\n")
+                  summary_file.write(f"- ❌ Forbidden: {summary.get('forbidden', 0)}\n")
+                  summary_file.write(f"- ❓ Unknown: {summary.get('unknown', 0)}\n\n")
 
-    # Fail if forbidden packages found
-    if summary.get('forbidden', 0) > 0:
-        print("\n❌ FORBIDDEN PACKAGES DETECTED!")
-        sys.exit(1)
+              # Fail if forbidden packages found
+              if summary.get('forbidden', 0) > 0:
+                  print("\n❌ FORBIDDEN PACKAGES DETECTED!")
+                  sys.exit(1)
 
-except Exception as e:
-    print(f"Error reading policy results: {e}")
-    sys.exit(0)
-EOF
+          except Exception as e:
+              print(f"Error reading policy results: {e}")
+              sys.exit(0)
+          EOF
 
           python3 display_policy_summary.py
         fi
@@ -200,51 +200,51 @@ EOF
           echo "📊 License Change Summary:"
 
           cat > display_change_summary.py << 'EOF'
-import json
-import sys
-import os
+          import json
+          import sys
+          import os
 
-try:
-    with open('license-history/changes.json', 'r') as f:
-        data = json.load(f)
-        changes = data.get('changes', [])
+          try:
+              with open('license-history/changes.json', 'r') as f:
+                  data = json.load(f)
+                  changes = data.get('changes', [])
 
-    critical = sum(1 for c in changes if c.get('severity') == 'critical')
-    high = sum(1 for c in changes if c.get('severity') == 'high')
-    medium = sum(1 for c in changes if c.get('severity') == 'medium')
-    low = sum(1 for c in changes if c.get('severity') == 'low')
+              critical = sum(1 for c in changes if c.get('severity') == 'critical')
+              high = sum(1 for c in changes if c.get('severity') == 'high')
+              medium = sum(1 for c in changes if c.get('severity') == 'medium')
+              low = sum(1 for c in changes if c.get('severity') == 'low')
 
-    print(f"  Total changes detected: {len(changes)}")
-    print(f"  ⛔ Critical: {critical}")
-    print(f"  ⚠️  High:     {high}")
-    print(f"  📋 Medium:   {medium}")
-    print(f"  ℹ️  Low:      {low}")
+              print(f"  Total changes detected: {len(changes)}")
+              print(f"  ⛔ Critical: {critical}")
+              print(f"  ⚠️  High:     {high}")
+              print(f"  📋 Medium:   {medium}")
+              print(f"  ℹ️  Low:      {low}")
 
-    # Add to GitHub summary
-    summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
-    with open(summary_file_path, 'a') as summary_file:
-        summary_file.write("\n## 🔄 License Changes Detected\n\n")
-        summary_file.write(f"Total changes: {len(changes)}\n\n")
-        summary_file.write(f"- ⛔ Critical: {critical}\n")
-        summary_file.write(f"- ⚠️ High: {high}\n")
-        summary_file.write(f"- 📋 Medium: {medium}\n")
-        summary_file.write(f"- ℹ️ Low: {low}\n\n")
+              # Add to GitHub summary
+              summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+              with open(summary_file_path, 'a') as summary_file:
+                  summary_file.write("\n## 🔄 License Changes Detected\n\n")
+                  summary_file.write(f"Total changes: {len(changes)}\n\n")
+                  summary_file.write(f"- ⛔ Critical: {critical}\n")
+                  summary_file.write(f"- ⚠️ High: {high}\n")
+                  summary_file.write(f"- 📋 Medium: {medium}\n")
+                  summary_file.write(f"- ℹ️ Low: {low}\n\n")
 
-    # Fail if critical changes detected
-    if critical > 0:
-        print("\n❌ CRITICAL LICENSE CHANGES DETECTED!")
-        for change in changes:
-            if change.get('severity') == 'critical':
-                pkg = change.get('package_name', 'Unknown')
-                prev_lic = change.get('previous_license', 'Unknown')
-                curr_lic = change.get('current_license', 'Unknown')
-                print(f"   {pkg}: {prev_lic} → {curr_lic}")
-        sys.exit(1)
+              # Fail if critical changes detected
+              if critical > 0:
+                  print("\n❌ CRITICAL LICENSE CHANGES DETECTED!")
+                  for change in changes:
+                      if change.get('severity') == 'critical':
+                          pkg = change.get('package_name', 'Unknown')
+                          prev_lic = change.get('previous_license', 'Unknown')
+                          curr_lic = change.get('current_license', 'Unknown')
+                          print(f"   {pkg}: {prev_lic} → {curr_lic}")
+                  sys.exit(1)
 
-except Exception as e:
-    print(f"Error reading license changes: {e}")
-    sys.exit(0)
-EOF
+          except Exception as e:
+              print(f"Error reading license changes: {e}")
+              sys.exit(0)
+          EOF
 
           python3 display_change_summary.py
         fi
@@ -262,55 +262,55 @@ EOF
 
         # Extract forbidden packages and find alternatives
         cat > find_alternatives.py << 'EOF'
-import json
-import subprocess
-import sys
-
-try:
-    with open('policy-reports/policy-results.json', 'r') as f:
-        data = json.load(f)
-
-    forbidden_packages = [
-        pkg for pkg in data.get('packages', [])
-        if pkg.get('policy_status') == 'forbidden'
-    ]
-
-    if not forbidden_packages:
-        print("✅ No forbidden packages found")
-        sys.exit(0)
-
-    print(f"Found {len(forbidden_packages)} forbidden packages")
-
-    # Find alternatives for each forbidden package
-    for pkg in forbidden_packages[:5]:  # Limit to first 5 to avoid timeout
-        pkg_name = pkg.get('package_name', '')
-        pkg_type = pkg.get('package_type', 'PyPI')
-        forbidden_license = pkg.get('detected_license', '')
-
-        print(f"\nSearching alternatives for: {pkg_name} ({forbidden_license})")
-
-        output_file = f"alternatives/alternatives-{pkg_name.replace('/', '-')}.html"
-
-        cmd = [
-            'python3', 'workflow_components/scripts/alternative_package_finder.py',
-            '--package', pkg_name,
-            '--type', pkg_type,
-            '--forbidden-license', forbidden_license,
-            '--policy', 'workflow_components/config/company-policy.yml',
-            '--output', output_file,
-            '--max-results', '5'
-        ]
+        import json
+        import subprocess
+        import sys
 
         try:
-            subprocess.run(cmd, check=False, timeout=60)
-            print(f"  ✓ Generated alternatives report: {output_file}")
-        except Exception as e:
-            print(f"  ✗ Error finding alternatives: {e}")
+            with open('policy-reports/policy-results.json', 'r') as f:
+                data = json.load(f)
 
-except Exception as e:
-    print(f"Error processing forbidden packages: {e}")
-    sys.exit(0)
-EOF
+            forbidden_packages = [
+                pkg for pkg in data.get('packages', [])
+                if pkg.get('policy_status') == 'forbidden'
+            ]
+
+            if not forbidden_packages:
+                print("✅ No forbidden packages found")
+                sys.exit(0)
+
+            print(f"Found {len(forbidden_packages)} forbidden packages")
+
+            # Find alternatives for each forbidden package
+            for pkg in forbidden_packages[:5]:  # Limit to first 5 to avoid timeout
+                pkg_name = pkg.get('package_name', '')
+                pkg_type = pkg.get('package_type', 'PyPI')
+                forbidden_license = pkg.get('detected_license', '')
+
+                print(f"\nSearching alternatives for: {pkg_name} ({forbidden_license})")
+
+                output_file = f"alternatives/alternatives-{pkg_name.replace('/', '-')}.html"
+
+                cmd = [
+                    'python3', 'workflow_components/scripts/alternative_package_finder.py',
+                    '--package', pkg_name,
+                    '--type', pkg_type,
+                    '--forbidden-license', forbidden_license,
+                    '--policy', 'workflow_components/config/company-policy.yml',
+                    '--output', output_file,
+                    '--max-results', '5'
+                ]
+
+                try:
+                    subprocess.run(cmd, check=False, timeout=60)
+                    print(f"  ✓ Generated alternatives report: {output_file}")
+                except Exception as e:
+                    print(f"  ✗ Error finding alternatives: {e}")
+
+        except Exception as e:
+            print(f"Error processing forbidden packages: {e}")
+            sys.exit(0)
+        EOF
 
         python3 find_alternatives.py
         echo "✅ Alternative package search complete"
