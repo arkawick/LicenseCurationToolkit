@@ -869,22 +869,22 @@ jobs:
           echo ""
           echo "📊 Smart Curation Summary:"
           cat > display_curation_stats.py << 'EOF'
-import json
-import sys
+          import json
+          import sys
 
-try:
-    with open('curation-stats.json', 'r') as f:
-        stats = json.load(f)
+          try:
+              with open('curation-stats.json', 'r') as f:
+                  stats = json.load(f)
 
-    print(f"  Total Packages Analyzed: {stats.get('total_packages', 0)}")
-    print(f"  Curation Suggestions: {stats.get('total_curations', 0)}")
-    print(f"  High Confidence: {stats.get('high_confidence', 0)}")
-    print(f"  Manual Review Required: {stats.get('manual_review_required', 0)}")
+              print(f"  Total Packages Analyzed: {stats.get('total_packages', 0)}")
+              print(f"  Curation Suggestions: {stats.get('total_curations', 0)}")
+              print(f"  High Confidence: {stats.get('high_confidence', 0)}")
+              print(f"  Manual Review Required: {stats.get('manual_review_required', 0)}")
 
-except Exception as e:
-    print(f"Error reading stats: {e}")
-    sys.exit(0)
-EOF
+          except Exception as e:
+              print(f"Error reading stats: {e}")
+              sys.exit(0)
+          EOF
 
           python3 display_curation_stats.py
         fi
@@ -1062,39 +1062,39 @@ EOF
         if [ -f ".ort/license-history.json" ]; then
           # Extract changes for dashboard
           cat > extract_changes.py << 'EOF'
-import json
-import sys
+          import json
+          import sys
 
-try:
-    with open('.ort/license-history.json', 'r') as f:
-        history = json.load(f)
+          try:
+              with open('.ort/license-history.json', 'r') as f:
+                  history = json.load(f)
 
-    changes_list = []
-    for pkg_id, pkg_data in history.get('packages', {}).items():
-        if pkg_data.get('change_detected'):
-            changes_list.append({
-                'package': pkg_id,
-                'old_license': pkg_data.get('previous_license', 'UNKNOWN'),
-                'new_license': pkg_data.get('current_license', 'UNKNOWN'),
-                'severity': pkg_data.get('severity', 'UNKNOWN')
-            })
+              changes_list = []
+              for pkg_id, pkg_data in history.get('packages', {}).items():
+                  if pkg_data.get('change_detected'):
+                      changes_list.append({
+                          'package': pkg_id,
+                          'old_license': pkg_data.get('previous_license', 'UNKNOWN'),
+                          'new_license': pkg_data.get('current_license', 'UNKNOWN'),
+                          'severity': pkg_data.get('severity', 'UNKNOWN')
+                      })
 
-    output = {
-        'changes': changes_list,
-        'total_scans': history.get('total_scans', 0)
-    }
+              output = {
+                  'changes': changes_list,
+                  'total_scans': history.get('total_scans', 0)
+              }
 
-    with open('license-changes.json', 'w') as f:
-        json.dump(output, f, indent=2)
+              with open('license-changes.json', 'w') as f:
+                  json.dump(output, f, indent=2)
 
-    print(f"Extracted {len(changes_list)} changes")
+              print(f"Extracted {len(changes_list)} changes")
 
-except Exception as e:
-    print(f"Error: {e}")
-    # Create empty changes file
-    with open('license-changes.json', 'w') as f:
-        json.dump({'changes': [], 'total_scans': 0}, f)
-EOF
+          except Exception as e:
+              print(f"Error: {e}")
+              # Create empty changes file
+              with open('license-changes.json', 'w') as f:
+                  json.dump({'changes': [], 'total_scans': 0}, f)
+          EOF
 
           python3 extract_changes.py
           CHANGES_JSON_PARAM="--changes-json license-changes.json"
