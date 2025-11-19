@@ -320,7 +320,7 @@ jobs:
     - name: Extract packages with uncertain licenses
       run: |
         echo "🔍 Stage 5: Extracting packages with missing/uncertain licenses..."
-        python extract_uncertain_packages.py \
+        python3 workflow_components/scripts/extract_uncertain_packages.py \
           --ort-result ort-results/analyzer/analyzer-result.yml \
           --output-dir uncertain-packages
       continue-on-error: true
@@ -359,7 +359,7 @@ jobs:
         echo "Found $UNCERTAIN_COUNT packages with missing licenses"
 
         # Run PyPI license fetcher
-        python3 fetch_pypi_licenses.py \
+        python3 workflow_components/scripts/fetch_pypi_licenses.py \
           ort-results/analyzer/analyzer-result.yml \
           --fetch \
           --json \
@@ -517,7 +517,7 @@ jobs:
 
         # Check if ScanCode results exist
         if [ -d scancode-results ] && [ "$(ls -A scancode-results)" ]; then
-          python3 generate_scancode_reports.py scancode-results
+          python3 workflow_components/scripts/generate_scancode_reports.py scancode-results
           echo "✅ ScanCode summary reports generated"
         else
           echo "⚠️  No ScanCode results found, skipping report generation"
@@ -528,7 +528,7 @@ jobs:
       run: |
         echo "🔄 Stage 8b: Merging ScanCode results into SPDX..."
 
-        python merge_scancode_to_spdx.py \
+        python3 workflow_components/scripts/merge_scancode_to_spdx.py \
           --spdx ort-results/reporter/bom.spdx.yml \
           --scancode scancode-results/ \
           --output enhanced-spdx/bom-enhanced.spdx.json
@@ -541,7 +541,7 @@ jobs:
           pyspdxtools -i enhanced-spdx/bom-enhanced.spdx.json --validate || true
 
           # Also fix any issues with our validator
-          python spdx-validation-fixer.py \
+          python3 workflow_components/scripts/spdx-validation-fixer.py \
             -i enhanced-spdx/bom-enhanced.spdx.json \
             -o enhanced-spdx/bom-enhanced-fixed.spdx.json
         fi
@@ -586,7 +586,7 @@ jobs:
 
         # Run the original ORT curation script
         echo "Running ort_curation_script_html.py..."
-        python3 ort_curation_script_html.py 2>&1 | tee ort-curation.log
+        python3 workflow_components/scripts/ort_curation_script_html.py 2>&1 | tee ort-curation.log
 
         # Check if report was generated
         LATEST_REPORT=$(ls -t curation-report-*.html 2>/dev/null | head -n 1)
@@ -643,7 +643,7 @@ jobs:
 
         # Run enhanced conflict analysis
         echo "Running enhanced_ai_curation.py..."
-        python3 enhanced_ai_curation.py \
+        python3 workflow_components/scripts/enhanced_ai_curation.py \
           --ort-results ort-results/analyzer/analyzer-result.yml \
           --spdx-doc "$SPDX_INPUT" \
           --uncertain-packages uncertain-packages/uncertain-packages.json \
@@ -689,7 +689,7 @@ jobs:
 
         # Run AI missing licenses analyzer
         echo "Running ai_missing_licenses_analyzer.py..."
-        python3 ai_missing_licenses_analyzer.py \
+        python3 workflow_components/scripts/ai_missing_licenses_analyzer.py \
           uncertain-packages/uncertain-packages.json \
           curation-report-missing-licenses.html 2>&1 | tee missing-licenses-analysis.log
 
@@ -742,7 +742,7 @@ jobs:
 
         # Run comparison report generator
         echo "Running generate_license_comparison.py..."
-        python3 generate_license_comparison.py \
+        python3 workflow_components/scripts/generate_license_comparison.py \
           --ort-result ort-results/analyzer/analyzer-result.yml \
           $PYPI_RESULTS \
           $SCANCODE_DIR \
@@ -802,7 +802,7 @@ jobs:
 
         # Run AI resolution report
         echo "Running ai_multilayer_resolution.py..."
-        python3 ai_multilayer_resolution.py \
+        python3 workflow_components/scripts/ai_multilayer_resolution.py \
           $ORT_PARAM \
           $PYPI_PARAM \
           $SCANCODE_PARAM \
@@ -948,7 +948,7 @@ jobs:
         ls -la public/
 
         # Generate landing page using Python script
-        python3 generate_landing_page.py public
+        python3 workflow_components/scripts/generate_landing_page.py public
 
         echo "✅ Landing page generated with all available reports"
 
