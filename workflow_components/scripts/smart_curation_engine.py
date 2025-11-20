@@ -208,7 +208,8 @@ class SmartCurationEngine:
 
                 # Add to evidence
                 for pkg_id, evidence in self.evidence_db.items():
-                    if pkg_name.lower() in pkg_id.lower():
+                    # Skip if package name or ID is None
+                    if pkg_name and pkg_id and pkg_name.lower() in pkg_id.lower():
                         for lic_key, stats in licenses_found.items():
                             if lic_key not in evidence['licenses']:
                                 evidence['licenses'][lic_key] = {'sources': [], 'confidence': 0}

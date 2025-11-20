@@ -698,6 +698,7 @@ Examples:
     parser.add_argument('--history', default='.ort/license-history.json', help='History file')
     parser.add_argument('--policy', help='Policy file for severity assessment')
     parser.add_argument('--output', default='license-changes-report.html', help='Output HTML file')
+    parser.add_argument('--json', help='Output JSON file with changes data')
     parser.add_argument('--fail-on-critical', action='store_true', help='Exit with error if critical changes found')
 
     args = parser.parse_args()
@@ -739,6 +740,33 @@ Examples:
 
             # Generate report
             monitor.generate_html_report(changes, args.output)
+
+            # Generate JSON output if requested
+            if args.json:
+                import json
+                json_data = {
+                    'total_changes': len(changes),
+                    'critical': critical,
+                    'high': high,
+                    'medium': medium,
+                    'low': low,
+                    'changes': [
+                        {
+                            'package_name': c.package_name,
+                            'package_type': c.package_type,
+                            'version': c.version,
+                            'previous_license': c.previous_license,
+                            'current_license': c.current_license,
+                            'severity': c.severity.name.lower(),
+                            'change_date': c.change_date.isoformat() if c.change_date else None,
+                            'notes': c.notes
+                        }
+                        for c in changes
+                    ]
+                }
+                with open(args.json, 'w') as f:
+                    json.dump(json_data, f, indent=2)
+                print(f"   📄 JSON output saved to: {args.json}")
 
             # Fail on critical if requested
             if args.fail_on_critical and critical > 0:
