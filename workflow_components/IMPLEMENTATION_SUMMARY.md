@@ -26,7 +26,6 @@ LicenseCurationTool-main/License_Curation/
     │   ├── QUICK_SETUP.md
     │   └── WORKFLOW_STRUCTURE.md
     ├── advanced-integrated-workflow.yml  # ← NEW: Integrated workflow file
-    ├── requirements.txt              # ← Python dependencies
     └── README.md                     # ← Comprehensive guide
 ```
 
@@ -233,7 +232,7 @@ Before committing, test the policy checker locally:
 ```bash
 # Install dependencies
 cd LicenseCurationTool-main/License_Curation
-pip install -r workflow_components/requirements.txt
+pip install pyyaml requests spdx-tools
 
 # Run ORT analysis on your conanx package
 cd ../../conanx/conanx_code

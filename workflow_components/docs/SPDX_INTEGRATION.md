@@ -63,10 +63,11 @@ This guide covers the **SPDX and NTIA SBOM compliance** features added to the Li
 
 ### **1. spdx-tools Python Library**
 
-**Location:** `workflow_components/requirements.txt`
+**Installation:** Automatically installed by the workflow
 
-```python
-spdx-tools>=0.8.2  # Official SPDX validation and format conversion
+```yaml
+# In .github/workflows/advanced-integrated-workflow.yml
+pip install pyyaml requests spdx-tools
 ```
 
 **What it provides:**

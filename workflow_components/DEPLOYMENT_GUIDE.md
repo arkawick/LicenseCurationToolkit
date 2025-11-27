@@ -18,14 +18,15 @@ cp -r workflow_components/ /path/to/your/project/
 cp -r .github/workflows/advanced-integrated-workflow.yml /path/to/your/project/.github/workflows/
 ```
 
-### **Step 2: Install Dependencies**
+### **Step 2: Configure Policy**
 
 ```bash
 cd /path/to/your/project
-pip install -r workflow_components/requirements.txt
+# Python dependencies are automatically installed by the GitHub Actions workflow
+# No manual installation required
 ```
 
-### **Step 3: Configure Policy**
+### **Step 3: Commit and Push**
 
 Edit `workflow_components/config/company-policy.yml` to match your license policy.
 
@@ -65,7 +66,6 @@ your-project/
 │   ├── docs/                                   # Detailed documentation
 │   │   ├── WORKFLOW_STRUCTURE.md               # Architecture overview
 │   │   └── SPDX_INTEGRATION.md                 # SPDX & NTIA compliance guide
-│   ├── requirements.txt                        # Python dependencies
 │   ├── README.md                               # Feature documentation
 │   ├── DEPLOYMENT_GUIDE.md                     # This file
 │   ├── IMPLEMENTATION_SUMMARY.md               # Implementation details
@@ -500,7 +500,7 @@ Before deploying to production:
 
 - [ ] Copied `workflow_components/` to project root
 - [ ] Copied workflow to `.github/workflows/`
-- [ ] Installed dependencies (`pip install -r requirements.txt`)
+- [ ] Dependencies auto-installed by workflow (no manual setup needed)
 - [ ] Configured license policy (`config/company-policy.yml`)
 - [ ] Enabled GitHub Pages in repository settings
 - [ ] (Optional) Added Azure OpenAI secrets for AI features

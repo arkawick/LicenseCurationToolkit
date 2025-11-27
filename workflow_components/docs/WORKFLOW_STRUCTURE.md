@@ -32,7 +32,6 @@ your-repository/
 │   ├── docs/
 │   │   ├── QUICK_SETUP.md                     # Getting started guide
 │   │   └── WORKFLOW_STRUCTURE.md              # This file
-│   ├── requirements.txt                       # Python dependencies
 │   └── README.md                              # Main documentation
 │
 ├── .ort/                                      # Created during workflow

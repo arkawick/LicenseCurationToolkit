@@ -49,7 +49,7 @@ your-repository/
 │   ├── config/
 │   │   └── company-policy.yml
 │   ├── docs/
-│   ├── requirements.txt
+│   ├── scripts/
 │   └── README.md
 ├── your-source-code/
 └── ...

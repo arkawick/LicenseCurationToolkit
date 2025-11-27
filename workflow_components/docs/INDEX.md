@@ -259,7 +259,6 @@ workflow_components/
 ├── README.md                        📖 Feature documentation
 ├── NEW_FEATURES_SUMMARY.md          ✨ Smart Curation + Dashboard
 ├── IMPLEMENTATION_SUMMARY.md        🔧 Implementation details
-├── requirements.txt                 📦 Python dependencies
 ├── config/
 │   └── company-policy.yml           🔐 License policy
 ├── diagrams/                        📊 Visual architecture

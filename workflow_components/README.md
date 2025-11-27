@@ -84,15 +84,27 @@ This integrated workflow combines the power of ORT, ScanCode, PyPI API, and AI-p
 3. **License Change Monitor** - Historical tracking
 4. **PyPI API** - Fast registry lookup
 5. **ScanCode** - Deep source code scanning
-6. **AI Analysis** - Intelligent conflict resolution
+6. **Smart Curation Engine** - Multi-source evidence aggregation ⭐ NEW
+7. **AI Analysis** - Intelligent conflict resolution (optional)
+
+### 📋 SBOM & Compliance ⭐ NEW
+- **Official SPDX Validation** - Using spdx-tools library
+- **NTIA Minimum Elements** - 7 required elements validation
+- **Multi-Format Export** - JSON, YAML, Tag-Value, RDF
+- **Compliance Scoring** - 0-100% SBOM quality metrics
+- **Government Standards** - US Executive Order 14028 compliant
 
 ### 📊 Comprehensive Reporting
 - Policy compliance report (HTML + JSON)
 - License change alerts with severity
+- **NTIA SBOM compliance report** ⭐ NEW
+- **Multi-format SPDX export (JSON/YAML/Tag-Value/RDF)** ⭐ NEW
 - Alternative packages report
+- Smart curation review queue with confidence scoring
+- Unified compliance dashboard (executive summary)
 - Multiple AI-powered curation reports
 - Enhanced SPDX documents
-- Unified GitHub Pages dashboard
+- Interactive GitHub Pages landing page
 
 ---
 
@@ -107,8 +119,8 @@ python --version
 # ORT installed (or use workflow auto-install)
 ort --version
 
-# Install Python dependencies
-pip install -r workflow_components/requirements.txt
+# Python dependencies are automatically installed by the workflow
+# No manual installation required
 ```
 
 ### 5-Minute Setup
@@ -182,18 +194,57 @@ git push
      └───────────┬─────────────────┘
                  │
      ┌───────────▼─────────────────┐
-     │  STAGE 8-9: AI Analysis     │ ◄─── Azure OpenAI
-     │  - Main curation report     │
-     │  - Conflict resolution      │
-     │  - Missing license research │
-     │  - Multi-layer comparison   │
+     │  STAGE 8: SPDX Validation   │ ⭐ NEW
+     │  - Official spdx-tools      │
+     │  - Spec validation          │
+     │  - Auto-fix common issues   │
      └───────────┬─────────────────┘
                  │
      ┌───────────▼─────────────────┐
-     │  STAGE 10-11: Deploy        │
-     │  - GitHub Pages             │
-     │  - Artifact upload          │
-     │  - PR comments              │
+     │  STAGE 8c: Format Export    │ ⭐ NEW
+     │  - JSON format              │
+     │  - YAML format              │
+     │  - Tag-Value format         │
+     │  - RDF format               │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 8d: NTIA Compliance  │ ⭐ NEW
+     │  - Minimum elements check   │
+     │  - Compliance scoring       │
+     │  - Quality metrics          │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 9: ORT Reports       │
+     │  - Web App, HTML, SPDX      │
+     │  - CycloneDX SBOM           │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 9.5: Smart Curation  │ ⭐ NEW
+     │  - Multi-source aggregation │
+     │  - Confidence scoring       │
+     │  - Auto + manual queue      │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 10: GitHub Pages     │
+     │  - Copy all reports         │
+     │  - Generate landing page    │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 10.5: Dashboard      │ ⭐ NEW
+     │  - Unified compliance view  │
+     │  - SBOM + policy + changes  │
+     │  - Action items priority    │
+     └───────────┬─────────────────┘
+                 │
+     ┌───────────▼─────────────────┐
+     │  STAGE 11: Deploy           │
+     │  - Publish to Pages         │
+     │  - Upload artifacts         │
      └─────────────────────────────┘
 ```
 
@@ -305,6 +356,7 @@ python3 scripts/smart_curation_engine.py \
 - Overall compliance score and risk assessment
 - Policy compliance breakdown (approved/conditional/forbidden/unknown)
 - License change alerts summary
+- **SBOM compliance metrics (NTIA minimum elements)** ⭐ NEW
 - Smart curation statistics
 - Priority action items (sorted by severity)
 - Links to all detailed reports
@@ -314,6 +366,7 @@ python3 scripts/smart_curation_engine.py \
 python3 scripts/compliance_dashboard.py \
   --policy-json policy-reports/policy-results.json \
   --changes-json license-changes.json \
+  --sbom-json sbom-compliance/ntia-compliance.json \
   --curation-stats curation-stats.json \
   --reports-dir public \
   --output compliance-dashboard.html
@@ -326,15 +379,71 @@ python3 scripts/compliance_dashboard.py \
 - 📊 **Overall Compliance Score** - Weighted average with risk level (LOW/MEDIUM/HIGH/CRITICAL)
 - ✅ **Policy Compliance** - Visual breakdown with percentage bars
 - 🔄 **License Changes** - Summary by severity (Critical/High/Medium/Low)
+- 📋 **SBOM Compliance** - NTIA minimum elements validation ⭐ NEW
 - 🤖 **Smart Curation Results** - Total suggestions and manual review count
 - ⚡ **Priority Action Items** - Top 10 actions sorted by urgency
 - 📄 **Available Reports** - Auto-detected links to all generated reports
 
 **Risk Calculation:**
-- Base score from policy compliance
+- Weighted: Policy (60%) + SBOM (25%) + Changes Buffer (15%)
 - Penalties for critical changes (-10% each, max -20%)
 - Penalties for forbidden packages (-15% each, max -30%)
 - Risk levels: >90% = LOW, 75-90% = MEDIUM, 60-75% = HIGH, <60% = CRITICAL
+
+#### 6. `sbom_compliance_checker.py` ⭐ NEW
+**Purpose:** Validate SBOM against NTIA minimum elements and SPDX specification
+
+**Features:**
+- NTIA minimum elements validation (7 required elements)
+- Official SPDX spec validation using spdx-tools
+- Compliance scoring (0-100%)
+- Identifies missing metadata per package
+- HTML report + JSON export
+
+**Usage:**
+```bash
+python3 scripts/sbom_compliance_checker.py \
+  --spdx enhanced-spdx/bom-enhanced.spdx.json \
+  --html-output sbom-compliance/ntia-compliance-report.html \
+  --json-output sbom-compliance/ntia-compliance.json
+```
+
+**NTIA Minimum Elements Checked:**
+1. **Supplier Name** - Package author/organization
+2. **Component Name** - Package name
+3. **Version** - Specific version number
+4. **Unique Identifier** - SPDX ID or PURL
+5. **Dependency Relationships** - Package connections
+6. **SBOM Author** - Who created the SBOM
+7. **Timestamp** - Creation date/time
+
+**Outputs:**
+- `ntia-compliance-report.html` - Detailed compliance report
+- `ntia-compliance.json` - Machine-readable results
+
+**Example Output:**
+```
+┌─────────────────────────────────────────────────┐
+│      NTIA SBOM COMPLIANCE REPORT                │
+├─────────────────────────────────────────────────┤
+│ Overall Score: 94/100                           │
+│ NTIA Compliant: ✅ YES                          │
+├─────────────────────────────────────────────────┤
+│ ✅ Supplier Name:     195/200 packages          │
+│ ✅ Component Name:    200/200 packages          │
+│ ✅ Version:           200/200 packages          │
+│ ✅ Unique Identifier: 200/200 packages          │
+│ ⚠️  Dependencies:     185/200 packages (92%)    │
+│ ✅ SBOM Author:       Present                   │
+│ ✅ Timestamp:         2025-01-22T10:30:00Z      │
+└─────────────────────────────────────────────────┘
+```
+
+**Why NTIA Compliance Matters:**
+- US Executive Order 14028 requirement
+- Government contracts mandate
+- Supply chain security (CISA, NIST)
+- Vulnerability tracking requires accurate SBOMs
 
 ### Configuration (`config/`)
 
@@ -422,8 +531,8 @@ git push
 ### Option 2: Local Development
 
 ```bash
-# 1. Install dependencies
-pip install -r workflow_components/requirements.txt
+# 1. Install Python dependencies
+pip install pyyaml requests spdx-tools
 
 # 2. Install ORT
 ORT_VERSION="70.0.1"
@@ -658,7 +767,76 @@ Top 3 recommendations:
 
 ---
 
-### 4. AI Curation Reports
+### 4. Smart Curation Review Queue ⭐ NEW
+**File:** `manual-review-queue.html`
+
+**Contents:**
+- Packages requiring manual review (confidence <70%)
+- Multi-source evidence comparison
+- Confidence scores per package
+- Conflicting license detections
+- Recommended curations
+- One-click copy for curation files
+
+---
+
+### 5. NTIA SBOM Compliance Report ⭐ NEW
+**File:** `ntia-compliance-report.html`
+
+**Contents:**
+- Overall compliance score (0-100%)
+- NTIA compliant badge (YES/NO)
+- 7 minimum elements validation
+- Missing metadata per package
+- SPDX spec validation results
+- Actionable improvement recommendations
+
+**Visual Breakdown:**
+- ✅ Green: Element present
+- ⚠️ Yellow: Partially present
+- ❌ Red: Missing (requires action)
+
+---
+
+### 6. Unified Compliance Dashboard ⭐ NEW
+**File:** `compliance-dashboard.html`
+
+**Contents:**
+- Overall compliance score (policy + SBOM + changes)
+- Risk level assessment (LOW/MEDIUM/HIGH/CRITICAL)
+- Policy compliance breakdown
+- License change alerts summary
+- SBOM quality metrics
+- Smart curation statistics
+- Priority action items (top 10)
+- Links to all detailed reports
+
+**Perfect for:**
+- Executive presentations
+- Weekly compliance reviews
+- Release gate decisions
+- Audit preparation
+
+---
+
+### 7. SPDX Multi-Format Export ⭐ NEW
+**Directory:** `spdx-formats/`
+
+**Files:**
+- `bom.spdx.json` - JSON format (API integration, tooling)
+- `bom.spdx.yml` - YAML format (human-readable, version control)
+- `bom.spdx.tv` - Tag-Value format (traditional SPDX)
+- `bom.spdx.rdf` - RDF format (semantic web, linked data)
+
+**Use Cases:**
+- Vulnerability scanning integration (Grype, Trivy)
+- Government contract deliverables
+- Customer SBOM requests
+- Supply chain transparency
+
+---
+
+### 8. AI Curation Reports (Optional)
 **Files:** `curation-report-*.html`
 
 **Types:**
@@ -667,19 +845,27 @@ Top 3 recommendations:
 - Missing licenses analysis (AI research suggestions)
 - Multi-layer comparison (all sources combined)
 
+**Note:** Requires Azure OpenAI API key
+
 ---
 
-### 5. GitHub Pages Dashboard
+### 9. GitHub Pages Dashboard
 
 **URL:** `https://<your-org>.github.io/<your-repo>/`
 
 **Includes:**
-- All reports listed above
+- Landing page with all reports
+- Compliance Dashboard (executive view)
+- Policy compliance report
+- License change alerts
+- NTIA SBOM compliance report
+- Smart curation review queue
+- Alternative packages reports
 - ORT WebApp (interactive dependency explorer)
 - ORT StaticHTML report
 - ScanCode native reports
 - PyPI license fetch results
-- Enhanced SPDX documents
+- SPDX documents (4 formats)
 - CycloneDX SBOM
 
 ---
