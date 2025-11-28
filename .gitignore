@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# ORT Results
+ort-results/
+.ort/
+scancode-results/
+uncertain-packages/
+enhanced-spdx/
+pypi-licenses/
+policy-reports/
+license-history/
+alternatives/
+spdx-formats/
+sbom-compliance/
+downloaded-packages/
+
+# Generated Reports
+*.html
+curation-report-*.html
+license-comparison.html
+ai-multilayer-resolution.html
+compliance-dashboard.html
+manual-review-queue.html
+
+# SPDX files
+*.spdx.json
+*.spdx.yml
+*.spdx.tv
+*.spdx.rdf
+
+# Curation files
+smart-curations.yml
+curation-stats.json
+
+# Logs
+*.log
+ort-curation.log
+conflict-analysis.log
+missing-licenses-analysis.log
+dashboard.log
+license-comparison.log
+smart-curation.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# GitHub Pages
+public/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep license history for tracking
+!.ort/license-history.json
